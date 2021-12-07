@@ -1,4 +1,7 @@
 #Makefile
+c_file = "calcu_codefile_lines"
+file_suffix = ".c"
+
 del_vivado_jou_log:
 	rm -R *.jou
 	rm -R *.log
@@ -14,3 +17,6 @@ get_all_code_files:
 
 get_all_ip_files:
 	python3 get_all_ip_files.py
+
+compile_c:
+	gcc ${c_file}${file_suffix} -o ${c_file}.out
