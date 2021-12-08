@@ -1,0 +1,6 @@
+*.f
+*.tcl
+calcu_code_files_lines/
+copy_code_files/
+__pycache__/
+copy_ip_files/

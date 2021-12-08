@@ -1,7 +1,6 @@
 import sys
 import os
 import shutil
-import chardet
 from xml.dom.minidom import parse
 from calcu_codefile_lines import VerilogFile
 
@@ -130,22 +129,13 @@ def convertToUTF_8InNewFile(OriginFilePath, NewFilePath):
         NewFileDirPath = './'
     if os.path.isdir(NewFileDirPath) == False:
         recursiveMakeDir(NewFileDirPath)
-    OriginFile = open(OriginFilePath, 'rb')
-    ChardetDetectInfo = chardet.detect(OriginFile.read())
-    OriginFile.close()
-    FileEncoding = ''
-    if ChardetDetectInfo['confidence'] > 0.5:
-        FileEncoding = ChardetDetectInfo['encoding']
-    else:
-        FileEncoding = 'utf-8'
-        try:
-            OriginFile = open(OriginFilePath, 'r', encoding=FileEncoding)
-            OriginFile.read()
-        except UnicodeDecodeError:
-            FileEncoding = 'GBK'
-        OriginFile.close()
-    if FileEncoding == 'GB2312' or FileEncoding == 'gb2312':
+    FileEncoding = 'utf-8'
+    try:
+        OriginFile = open(OriginFilePath, 'r', encoding=FileEncoding)
+        OriginFile.read()
+    except UnicodeDecodeError:
         FileEncoding = 'GBK'
+    OriginFile.close()
     OriginFile = open(OriginFilePath, 'r', encoding = FileEncoding)
     NewFile = open(NewFilePath, 'w', encoding='utf-8')
     OriginFileData = OriginFile.readline()

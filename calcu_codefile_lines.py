@@ -1,6 +1,5 @@
 import os
 import re
-import chardet
 
 def judgeEmptyLine(FileLine = ''):
     if type(FileLine) != str:
@@ -149,26 +148,14 @@ class VerilogFile():
             print('Error: Init failed! Can not countLinesNum!')
             return False
         print('-- Begin to count ' + self.Path)
-        VerilogFile = open(self.Path, 'rb')
-        ChardetDetectInfo = chardet.detect(VerilogFile.read())
-        VerilogFile.close()
-        print('--', ChardetDetectInfo)
-        FileEncoding = ''
-        if ChardetDetectInfo['confidence'] > 0.5:
-            FileEncoding = ChardetDetectInfo['encoding']
-        else:
-            FileEncoding = 'utf-8'
-            try:
-                VerilogFile = open(self.Path, 'r', encoding=FileEncoding)
-                VerilogFile.read()
-            except UnicodeDecodeError:
-                FileEncoding = 'GBK'
-            VerilogFile.close()
-        if FileEncoding == 'GB2312' or FileEncoding == 'gb2312':
-            print('-- Open this file with encoding : GBK')
+        FileEncoding = 'utf-8'
+        try:
+            VerilogFile = open(self.Path, 'r', encoding=FileEncoding)
+            VerilogFile.read()
+        except UnicodeDecodeError:
             FileEncoding = 'GBK'
-        else:
-            print('-- Open this file with encoding : ' + FileEncoding)
+        VerilogFile.close()
+        print('-- Open this file with encoding : ' + FileEncoding)
         VerilogFile = open(self.Path, 'r', encoding = FileEncoding)
         BlockCommLinesNum = 0
         while True:
